@@ -3,7 +3,10 @@
 let numeros = [1, 2, 3, 4, 5]
 
 function transformarArray(array, transformacao){
-
+   let novoArray = array.map((item) =>{
+    return transformacao(item)
+   })
+   return novoArray;
 }
 
 function dobrar(numero){

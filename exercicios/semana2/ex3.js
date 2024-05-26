@@ -10,7 +10,16 @@ let produtos = [
 
 
 function agruparPorCategoria(produtos){
-
+    return produtos.reduce((acumulador, produto) =>{
+        let {categoria, preco} = produto; //desestruturação
+    
+        if (acumulador[categoria]){
+            acumulador[categoria] += preco;
+        }else {
+            acumulador[categoria] = preco
+        }
+        return acumulador
+       }, {})
 }
 
 console.log(agruparPorCategoria(produtos))

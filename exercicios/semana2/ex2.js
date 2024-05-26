@@ -7,8 +7,8 @@ let pessoas =[
     {nome: 'David', idade: 19}
 ]
 
-function filtrarAdultos(pessoas){
-
+function filtrarAdultos(pessoas){ //precisa primeiro filtrar quem tem mais de 18 e depois criar um array novo
+   return pessoas.filter(pessoa => pessoa.idade >= 18).map(pessoa => pessoa.nome) 
 }
 
 console.log(filtrarAdultos(pessoas))

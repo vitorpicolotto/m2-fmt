@@ -2,7 +2,9 @@
 
 
 function compor (f, g){
-
+    return function(x){
+        return f(g(x));
+    }
 }
 
 function somar1(x){

@@ -3,7 +3,9 @@
 let numeros = [1,2,3,4,5]
 
 function calcularProduto(numeros){
-
+    let produto = numeros.reduce((total, numero) =>{
+    return total * numero}, 1)
+    return produto
 }
 
 console.log(calcularProduto(numeros))
