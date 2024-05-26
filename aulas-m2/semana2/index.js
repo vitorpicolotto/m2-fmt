@@ -232,3 +232,65 @@ let medias = dados1.map(({nome, notas})=>{ //aqui desestruturou o objeto pra já
 })
 
 console.log(medias)
+
+
+        //AULA 3//
+
+    //Funções de alta ordem - recebe uma ou mais funções como argumento ou retorna uma função como resultado
+
+
+function executarOperacao(a, b, operacao){
+    return operacao(a, b)
+}
+function soma1 (x,y){
+    return x + y
+}
+function subtracao1 (x,y){
+    return x - y
+}
+function multiplicacao1 (x,y){
+    return x * y
+}
+
+console.log(executarOperacao(12, 3, soma1))
+console.log(executarOperacao(30, 15, subtracao1))
+console.log(executarOperacao(4, 3, multiplicacao1))
+
+
+function criarSaudacao(saudacao) {
+    return function (nome) {
+        return `${saudacao}, ${nome}!`
+    }
+}
+
+const saudacaoOla = criarSaudacao("Olá")
+console.log(saudacaoOla("Vitor"))
+
+    //CLOSURES
+    //Função interna tem acesso às variáveis da função externa mesmo após a função externa ter sido executada.
+
+function contador1(){
+    let contagem = 0
+    return function(){
+        contagem += 1
+        return contagem
+    }
+}
+const incrementar = contador1();
+console.log(incrementar())
+console.log(incrementar())
+//No exemplo, a função retornada pelo contador mantém uma referência a variável 'contagem', demonstrando como closures podem lembrar do estado entre execuções. MANTEM OS VALORES ATUALIZADOS, COMO O USESTATE.
+
+function criarUsuario(nome){
+    let senha = "senhaSegura"
+    return {
+        getNome: function(){return nome},
+        validarSenha: function(tentativa){
+            return tentativa === senha
+        }
+    }
+}
+const usuario2 = criarUsuario("Vitor");
+console.log(usuario2.getNome());
+console.log(usuario2.validarSenha("senhaSegura")) //true
+console.log(usuario2.validarSenha("senhaErrada")) //false
