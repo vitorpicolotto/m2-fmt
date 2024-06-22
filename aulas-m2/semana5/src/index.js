@@ -25,17 +25,28 @@ app.get('/bemvindo', (request, response)=>{
 //Response é usado no momento em que quer encerrar a requisição.
 
 //para cadastrar - tem o Body (corpo) da requisição
-app.post('/pets', (req, res) =>{
-    const dados = req.body
+app.post('/pets', async (request, response) =>{
 
-    conexao.query
-    (`
-    INSERT INTO pets (nome, idade, tipo, raca, responsavel)
-    values ('${dados.nome}', '${dados.idade}', '${dados.tipo}', '${dados.raca}', '${dados.responsavel}')
-    `)
+    try {
+        
+        const dados = request.body
+    
+        if(!dados.nome || !dados.tipo || !dados.raca || !dados.idade){
+            return response.send("O nome, tipo, raça e idade são obrigatório!")
+        } 
+    
+        await conexao.query
+        (`
+        INSERT INTO pets (nome, idade, tipo, raca, responsavel)
+        values ($1, $2, $3, $4, $5)
+        `, [dados.nome, dados.idade, dados.tipo, dados.raca, dados.responsavel])
+    
+        console.log(dados)
+        response.status(201).json({mensagem: "Criado com sucesso"})
+    } catch {
+        response.status(500).json({mensagem: "Não foi possível cadastrar o pet"})
+    }
 
-    console.log(dados)
-    res.send("Estou aqui")
 })
 
 app.listen(3000, () => {
