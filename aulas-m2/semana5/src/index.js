@@ -32,7 +32,9 @@ app.post('/pets', async (request, response) =>{
         const dados = request.body
     
         if(!dados.nome || !dados.tipo || !dados.raca || !dados.idade){
-            return response.send("O nome, tipo, raça e idade são obrigatório!")
+            return response
+            .status(400)
+            .json({mensagem: "O nome, tipo, raça e idade são obrigatório!"})
         } 
     
         await conexao.query
@@ -41,13 +43,35 @@ app.post('/pets', async (request, response) =>{
         values ($1, $2, $3, $4, $5)
         `, [dados.nome, dados.idade, dados.tipo, dados.raca, dados.responsavel])
     
-        console.log(dados)
         response.status(201).json({mensagem: "Criado com sucesso"})
     } catch {
         response.status(500).json({mensagem: "Não foi possível cadastrar o pet"})
     }
 
 })
+
+app.post("/vacinas", async (request, response) => {
+
+    try {
+        const vacina = request.body
+    
+        if(!vacina.nome || !vacina.descricao || !vacina.dose){
+            return response
+            .status(400)
+            .json({mensagem: "Os dados da vacina são obrigatórios"})
+        }
+    
+        await conexao.query(`
+            INSERT INTO vacinas (nome, descricao, dose)
+            values ($1, $2, $3)    
+        `, [vacina.nome, vacina.descricao, vacina.dose])
+    
+        response.status(201).json({mensagem: "Vacina cadastrada com sucesso"})
+    } catch {
+        response.status(500).json({mensagem:"Erro ao cadastrar a vacina"})
+    }
+})
+
 
 app.listen(3000, () => {
     console.log('Servidor online na porta 3000')
