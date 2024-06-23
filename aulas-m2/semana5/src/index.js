@@ -19,8 +19,16 @@ const conexao = new Pool({
 3. Implementação: o que nosso código vai fazer quando entrar na rota?
 */
 
-app.get('/bemvindo', (request, response)=>{
-    response.send("Bem vindo, usuário!")
+app.get('/pets', async (request, response)=>{
+    const dados = request.query
+
+    if(dados.nome){
+        const pets = await conexao.query("SELECT * from pets where nome ilike $1", [`%${dados.nome}%`])
+        response.status(200).json(pets.rows)
+    } else {
+        const pets = await conexao.query("SELECT * from pets")
+        response.status(200).json(pets.rows)
+    }
 })
 //Response é usado no momento em que quer encerrar a requisição.
 
@@ -72,7 +80,24 @@ app.post("/vacinas", async (request, response) => {
     }
 })
 
+//o /:id não quer dizer que é literalmente dessa forma que tem que colocar. Serve para o express identificar que vai deletar o id que o desenvolvedor selecionar como /pets/1 - é uma rota dinâmica (usada em delete e put)
+app.delete('/pets/:id', (request, response) =>{
+    const id = request.params.id
+
+    conexao.query("DELETE FROM pets where id = $1", [id])
+
+    response.status(204).json()
+})
+
 
 app.listen(3000, () => {
     console.log('Servidor online na porta 3000')
 }) //porta do prédio, para acessarmos as informações
+
+
+/*
+Formas de manipulação de dados via:
+Body: post e put
+Query Params: get
+Route Params (:id): delete, put e get
+*/
