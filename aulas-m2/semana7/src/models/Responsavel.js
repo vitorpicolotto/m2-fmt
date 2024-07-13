@@ -27,3 +27,5 @@ const Responsavel = connection.define('responsaveis', {
 });
 
 module.exports = Responsavel;
+
+//Model é um espelho da tabela do nosso banco de dados
